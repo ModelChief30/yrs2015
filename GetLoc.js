@@ -4,6 +4,8 @@ var latmin=0;
 var longmin=0;
 var longmax = 0;
 var latmax = 0;
+
+var lives =5;
 var GridKeyMap = new Object();
 for(i=0;i<100;i++){
 	GridKeyMap[i]=null;
@@ -35,10 +37,15 @@ function getLoc() {
 
 }*/
 
-
+function showLives(){
+	var livediv =document.getElementById("lives");
+	livediv.innerHTML = "lives:" + lives;
+}
 
 
 function initializeMap(position) {
+
+	showLives();
     var lat = position.coords.latitude;
     var longit = position.coords.longitude;
     
@@ -89,8 +96,8 @@ function initializeMap(position) {
 
           
         }
-        function handleClick(event){
-	        ClickPos = event.latLng;
+        function GetGridID(event){
+        	ClickPos = event.latLng;
 	        var ClickLat = ClickPos.lat();
 	        var ClickLong = ClickPos.lng();
 	        var ClickLatRem = (latmax-ClickLat) - (latmax-ClickLat)%divisionlat;
@@ -99,12 +106,23 @@ function initializeMap(position) {
 	        var ClickLongKey = (ClickLongRem)/divisionlon;
 	        console.log(ClickLongKey + ", "+ClickLatKey);
 	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
-	        console.log(MainKey);
+	        return MainKey;
+        }
+        function handleClick(event){
+	        
 	        //var x =GridKeyMap[parseInt(MainKey)]="dead";
 	        //GridKeyMap[parseInt(MainKey)]="dead";
 	        //console.log(x);
-	        console.log(GridKeyMap[parseInt(MainKey)])
+	        if(lives>0){
+		        
+		        lives = lives-1;
+		        showLives();
+		        var MainKey = GetGridID(event);
+		        console.log(GridKeyMap[parseInt(MainKey)])
+		        //paintGridAt(MainKey);
+	    	}else{
 
+	    	}
     	};
 
 	    google.maps.event.addListener(map, 'click', handleClick);
