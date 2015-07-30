@@ -2,7 +2,13 @@
 var divisionlon;
 var latmin;
 var longmin;*/
-var pName = "Santa";
+var GridKeyMap = new Object();
+for(i=0;i<100;i++){
+	GridKeyMap[i]=null;
+}
+console.log(GridKeyMap[99]);
+
+
 function getLoc() {
     var wr = document.getElementById("errorRender")
     if (navigator.geolocation) {
@@ -69,7 +75,6 @@ function initializeMap(position) {
 
             var Coordinates = [new google.maps.LatLng((latmin),(longmin+i*divisionlon)),
             	new google.maps.LatLng((latmax), (longmin + i*divisionlon))];
-            console.log(Coordinates);
             var GridLinesVert = new google.maps.Polyline({
             	path: Coordinates,
             	strokeColor: "FF0000",
@@ -79,24 +84,29 @@ function initializeMap(position) {
 
           
         }
+        function handleClick(event){
+	        ClickPos = event.latLng;
+	        var ClickLat = ClickPos.lat();
+	        var ClickLong = ClickPos.lng();
+	        var ClickLatRem = (latmax-ClickLat) - (latmax-ClickLat)%divisionlat;
+	        var ClickLongRem = (ClickLong-longmin) - (ClickLong-longmin)%divisionlon;
+	        var ClickLatKey = (ClickLatRem)/divisionlat;
+	        var ClickLongKey = (ClickLongRem)/divisionlon;
+	        console.log(ClickLongKey + ", "+ClickLatKey);
+	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
+	        console.log(MainKey);
+	        var x =GridKeyMap[parseInt(MainKey)]="dead";
+	        GridKeyMap[parseInt(MainKey)]="dead";
+	        console.log(x);
+
+    	};
+
+	    google.maps.event.addListener(map, 'click', handleClick);
     });
 
     
     //alert("registered boundschanged handler");
-    function handleClick(event){
-        ClickPos = event.latLng;
 
-        var ClickLat = ClickPos.lat();
-        var ClickLong = ClickPos.lng();
-        var ClickLatRem = ClickLat - ClickLat%divisionlat;
-        var ClickLongRem = ClickLong - ClickLong%divisionlon;
-        var ClickLatKey = (ClickLatRem - latmin)/divisionlat;
-        var ClickLongKey = (ClickLongRem - longmin)/divisionlon;
-        alert(ClickPos);
-
-    };
-
-    google.maps.event.addListener(map, 'click', handleClick);
     //alert("registered click");
 
 }
