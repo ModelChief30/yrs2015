@@ -197,7 +197,7 @@ function initializeMap(position) {
     
     var myOptions = {
         center: new google.maps.LatLng(lat, longit),
-        zoom: 12,
+        zoom: 11,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         draggable: false,
