@@ -1,7 +1,9 @@
-/*var divisionlat;
-var divisionlon;
-var latmin;
-var longmin;*/
+var divisionlat=0;
+var divisionlon=0;
+var latmin=0;
+var longmin=0;
+var longmax = 0;
+var latmax = 0;
 var GridKeyMap = new Object();
 for(i=0;i<100;i++){
 	GridKeyMap[i]=null;
@@ -33,6 +35,9 @@ function getLoc() {
 
 }*/
 
+
+
+
 function initializeMap(position) {
     var lat = position.coords.latitude;
     var longit = position.coords.longitude;
@@ -54,13 +59,13 @@ function initializeMap(position) {
 
         var se = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
-        var latmin = se.lat();
-        var latmax = ne.lat();
+        latmin = se.lat();
+        latmax = ne.lat();
 
-        var longmin = se.lng();
-        var longmax = ne.lng();
-        var divisionlat = (latmax-latmin)/10;
-        var divisionlon = (longmax-longmin)/10;
+        longmin = se.lng();
+        longmax = ne.lng();
+        divisionlat = (latmax-latmin)/10;
+        divisionlon = (longmax-longmin)/10;
 
         for(var i=0;i<11;i++){
             
@@ -95,9 +100,10 @@ function initializeMap(position) {
 	        console.log(ClickLongKey + ", "+ClickLatKey);
 	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
 	        console.log(MainKey);
-	        var x =GridKeyMap[parseInt(MainKey)]="dead";
-	        GridKeyMap[parseInt(MainKey)]="dead";
-	        console.log(x);
+	        //var x =GridKeyMap[parseInt(MainKey)]="dead";
+	        //GridKeyMap[parseInt(MainKey)]="dead";
+	        //console.log(x);
+	        console.log(GridKeyMap[parseInt(MainKey)])
 
     	};
 
@@ -107,12 +113,15 @@ function initializeMap(position) {
     });
 
 	function getPlaces(){
-    	var request = {location: map.center, radius:'200', query: 'hospital'};
+    	var request = {location: map.center, radius:'6000', query: 'church'};
 
     	service = new google.maps.places.PlacesService(map);
     	service.textSearch(request, handlePlaces);
 
     	function handlePlaces(results, status){
+
+    		console.log("DEBUG:" + latmax)
+
     		if (status == google.maps.places.PlacesServiceStatus.OK) {
 			    for (var i = 0; i < results.length; i++) {
 			        var place = results[i];
@@ -123,9 +132,9 @@ function initializeMap(position) {
 			        var placeLongRem = (placeLon-longmin) - (placeLon-longmin)%divisionlon;
 			        var placeLatKey = (placeLatRem)/divisionlat;
 			        var placeLongKey = (placeLongRem)/divisionlon;
-			        var placeKey = parseInt(placeLatKey + '' + placeLongKey);
-			        GridKeyMap[placeKey] = "Hospital";
-			        console.log(GridKeyMap);
+			        var placeKey = parseInt(placeLatKey + '' + Math.ceil(placeLongKey));
+			        GridKeyMap[placeKey] = "Church";
+			        console.log(GridKeyMap[placeKey]);
 			    }
   			}
 
