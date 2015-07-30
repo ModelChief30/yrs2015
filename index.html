@@ -6,7 +6,20 @@
  <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
-      
+      #navbar {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative; float: left; display: block; left: 50%;
+        width:50%;
+      } 
+      a {
+        display: block;
+        width: 60px;
+      }
+      #ab {
+        float: left;
+      }
       #mapcan{ margin-left: auto; margin-right: auto }
       
       #gamestatus, #lives{position:fixed; background-image: 
@@ -24,11 +37,19 @@
         color-stop(0%, white), color-stop(15%, white), color-stop(100%, #D7E9F5)); 
         background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); }
     </style>
+    <title>Play | Map Wars</title>
  </head>
   <body background="bg.png">
+    <ul id="navbar">
+      <li id="ab"><a href="index.html">Play</a></li>
+      <li id="ab"><a href="about.html">About</a></li>
+      <li id="ab"><a href="https://bitbucket.org/samuelbird/yrs2015">BitBucket Repo</a></li>
+    </ul> 
+    <br>
     
     <p>
-    Instructions:<ul><li>Black: You have hit the Target</li>
+    <br>
+    <em>Instructions:</em><ul><li>Black: You have hit the Target</li>
            <li>Red,Orange,Yellow: You are Close/near/far</li>
            <li>Green: Hospital!!! +1 Lives!</li></ul></p>
     <button onclick="getLoc()">Get Location</button> 
@@ -37,7 +58,7 @@
     
     <p id="errorRender"></p>
     
-    <div id="mapcan" style="width:350px; height:350px"></div>
+    <div id="mapcan" style="width:25%; height:50%"></div>
     
     
     <div id= "gamestatus" style="width: 350px; height:50px; margin-left: auto; margin-right:auto; text-align:center">Game Status</div>
