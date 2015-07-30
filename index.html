@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head><script src="GetLoc.js"></script>
+    <script type = "text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABhJXJyJrb3VYGIxFoRNqDOS_7SFGIoMg"></script>
+ <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      
+      #mapcan{ margin-left: auto; margin-right: auto }
+    </style>
+ </head>
+  <body>
+    <button onclick="getLoc()">Get Location</button> 
+    <h1>Your location: </h1>
+    
+    <p id="errorRender"></p>
+    
+    <div id="mapcan" style="width:700px; height:700px"></div>
+    
+    
+    <div style="width: 700px; height:100px; margin-left: auto; margin-right:auto"></div>
+  </body>
+</html>
