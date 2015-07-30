@@ -8,6 +8,10 @@ var randomnumber = 11;
 //Math.floor(Math.random() * (99 - 0 + 1)) + 0;
 var map;
 
+var ClickSnd = new Audio("click.wav");
+var WinSnd = new Audio("win.wav");
+var HospSnd = new Audio("hospital.wav");
+
 var ColourArray = ['', 'red', 'red', 'orange', 'orange', 'orange', 'yellow'];
 
 var lives =5;
@@ -113,6 +117,7 @@ function handleClick(event){
         if(GridKeyMap[parseInt(MainKey)]=="Target"){
         	paintGridAt(MainKey, 'black');
         	GameStatusDiv.innerHTML="You Win";
+        	WinSnd.play();
         	setTimeout(function(){
 
         		var rectangle = new google.maps.Rectangle({strokeColor: 'green',
@@ -127,10 +132,12 @@ function handleClick(event){
         	}, 1000);
 
         }else if(GridKeyMap[parseInt(MainKey)]=="Hospital"){
+        	HospSnd.play();
         	paintGridAt(MainKey, 'green');
         	lives = lives+1;
 
         }else{
+        	ClickSnd.play();
         	if(getDistance(event)<7){
         		paintGridAt(MainKey, ColourArray[getDistance(event)]);
         	}else{
