@@ -102,14 +102,49 @@ function initializeMap(position) {
     	};
 
 	    google.maps.event.addListener(map, 'click', handleClick);
+
+
     });
 
+	function getPlaces(){
+    	var request = {location: map.center, radius:'200', query: 'hospital'};
+
+    	service = new google.maps.places.PlacesService(map);
+    	service.textSearch(request, handlePlaces);
+
+    	function handlePlaces(results, status){
+    		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			    for (var i = 0; i < results.length; i++) {
+			        var place = results[i];
+			        console.log(place);
+			        placeLat = place.geometry.location.lat();
+			        placeLon = place.geometry.location.lng();
+			        var placeLatRem = (latmax-placeLat) - (latmax-placeLat)%divisionlat;
+			        var placeLongRem = (placeLon-longmin) - (placeLon-longmin)%divisionlon;
+			        var placeLatKey = (placeLatRem)/divisionlat;
+			        var placeLongKey = (placeLongRem)/divisionlon;
+			        var placeKey = parseInt(placeLatKey + '' + placeLongKey);
+			        GridKeyMap[placeKey] = "Hospital";
+			        console.log(GridKeyMap);
+			    }
+  			}
+
+    	}
+
+    	
+    }
+
+	google.maps.event.addListener(map, 'bounds_changed', getPlaces);
+
     
-    //alert("registered boundschanged handler");
 
-    //alert("registered click");
 
+    
+
+    
 }
+
+
 
 
 
