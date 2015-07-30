@@ -11,16 +11,20 @@
     </style>
  </head>
   <body>
-    <button onclick="getLoc()">Get Location</button> 
-    <h1>Your location: </h1>
     
+    <p><ul><li>Black: You have hit the Target</li>
+           <li>Red,Orange,Yellow: You are Close/near/far</li>
+           <li>Green: Hospital!!! +1 Lives!</li></ul></p>
+    <button onclick="getLoc()">Get Location</button> 
+    <h1>Map Wars</h1>
+    <div id="lives">Lives</div>
+    <div id="gamestatus">Game Status</div>
     <p id="errorRender"></p>
     
     <div id="mapcan" style="width:700px; height:700px"></div>
     
     
     <div style="width: 700px; height:100px; margin-left: auto; margin-right:auto"></div>
-    <div id="lives">Lives</div>
-    <div id="gamestatus">Game Status</div>
+    
   </body>
 </html>
