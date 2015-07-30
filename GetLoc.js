@@ -1,8 +1,8 @@
-var divisionlat;
+/*var divisionlat;
 var divisionlon;
 var latmin;
-var longmin;
-
+var longmin;*/
+var pName = "Santa";
 function getLoc() {
     var wr = document.getElementById("errorRender")
     if (navigator.geolocation) {
@@ -43,41 +43,47 @@ function initializeMap(position) {
     
     var map = new google.maps.Map(document.getElementById("mapcan"), myOptions);
     //alert("made map");
-    /*google.maps.event.addListener(map, 'bounds_changed', function(){
+    google.maps.event.addListener(map, 'bounds_changed', function(){
         var bounds = map.getBounds();
 
         var se = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
-        latmin = se.lat();
+        var latmin = se.lat();
         var latmax = ne.lat();
 
-        longmin = se.lng();
+        var longmin = se.lng();
         var longmax = ne.lng();
-        divisionlat = (latmax-latmin)/10;
-        divisionlon = (longmax-longmin)/10;
+        var divisionlat = (latmax-latmin)/10;
+        var divisionlon = (longmax-longmin)/10;
 
         for(var i=0;i<11;i++){
-            for(var j=0;j<11;j++){
-                var rectangle = new google.maps.Rectangle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 1,
-                fillColor: '#000000',
-                fillOpacity: 0.02,
-                map: map,
-                bounds: new google.maps.LatLngBounds(
-                  new google.maps.LatLng(latmin + i*divisionlat, longmin + j*divisionlon),
-                  new google.maps.LatLng(latmin + i*divisionlat + divisionlat, 
-                    longmin+j*divisionlon + divisionlon)
-                )});
-            }
+            
+            var Coordinates = [new google.maps.LatLng((latmin + i*divisionlat),(longmin)),
+            	new google.maps.LatLng((latmin+i*divisionlat), (longmax))];
+            var GridLinesHor = new google.maps.Polyline({
+            	path: Coordinates,
+            	strokeColor: "FF0000",
+            	strokeOpacity: 1.0
+            });
+            GridLinesHor.setMap(map);
+
+            var Coordinates = [new google.maps.LatLng((latmin),(longmin+i*divisionlon)),
+            	new google.maps.LatLng((latmax), (longmin + i*divisionlon))];
+            console.log(Coordinates);
+            var GridLinesVert = new google.maps.Polyline({
+            	path: Coordinates,
+            	strokeColor: "FF0000",
+            	strokeOpacity: 1.0
+            });
+            GridLinesVert.setMap(map);
+
+          
         }
-    });*/
+    });
 
     
     //alert("registered boundschanged handler");
-    
-    google.maps.event.addListener(map, 'click', function(event){
+    function handleClick(event){
         ClickPos = event.latLng;
 
         var ClickLat = ClickPos.lat();
@@ -88,7 +94,9 @@ function initializeMap(position) {
         var ClickLongKey = (ClickLongRem - longmin)/divisionlon;
         alert(ClickPos);
 
-    });
+    };
+
+    google.maps.event.addListener(map, 'click', handleClick);
     //alert("registered click");
 
 }
