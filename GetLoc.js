@@ -57,12 +57,12 @@ function GetGridID(event){
     return MainKey;
 }
 
-function drawRect(lat1,lng1, lat0, lng0){
-	var rectangle = new google.maps.Rectangle({strokeColor: 'red',
-		strokeOpacity:1.0, fillColor:'red', map:map,
+function drawRect(lat1,lng1, lat0, lng0, colour){
+	var rectangle = new google.maps.Rectangle({strokeColor: colour,
+		strokeOpacity:1.0, fillColor:colour, fillOpacity:1.0, map:map,
 		bounds: new google.maps.LatLngBounds(
-			new google.maps.LatLng(lat0,lng0),
-			new google.maps.LatLng(lat1,lng1)
+			new google.maps.LatLng(lat1,lng1),
+			new google.maps.LatLng(lat0,lng0)
 		)
 	});
 }
@@ -72,16 +72,16 @@ function paintGridAt(GridID, colour){
 	GridIDLat = GridID%10;
 	GridIDLong = (GridID - GridIDLat)/10;
 	console.log(GridIDLat, GridIDLong)
-	ColorSquareULCoLat=latmin + GridIDLat*divisionlat;
+	ColorSquareULCoLat=latmax - GridIDLat*divisionlat;
 
-	ColorSquareULCoLon=longmax - GridIDLong*divisionlon;
+	ColorSquareULCoLon=longmin + GridIDLong*divisionlon;
 	console.log(ColorSquareULCoLat, ColorSquareULCoLon);
-	ColorSquareBRCoLat = latmin +(GridIDLat+1)*divisionlat;
-	ColorSquareBRCoLon = longmax -(GridIDLong+1)*divisionlon;
+	ColorSquareBRCoLat = latmax -(GridIDLat+1)*divisionlat;
+	ColorSquareBRCoLon = longmin +(GridIDLong+1)*divisionlon;
 	console.log(ColorSquareBRCoLat, ColorSquareBRCoLon);
 	//var br = [51.549028703703016, -0.1146697998046875];
 	//var ul = 51.568239056209464, -0.141448974609375
-	drawRect(ColorSquareULCoLat,ColorSquareULCoLon, ColorSquareBRCoLat, ColorSquareBRCoLon);
+	drawRect(ColorSquareULCoLat,ColorSquareULCoLon, ColorSquareBRCoLat, ColorSquareBRCoLon, colour);
 	//drawRect(51.549028703703016, -0.1146697998046875, 51.568239056209464, -0.141448974609375);
 	
 	
@@ -89,7 +89,7 @@ function paintGridAt(GridID, colour){
 }
 
 function handleClick(event){
-    
+    var GameStatusDiv = document.getElementById("gamestatus");
     //var x =GridKeyMap[parseInt(MainKey)]="dead";
     //GridKeyMap[parseInt(MainKey)]="dead";
     //console.log(x);
@@ -99,10 +99,28 @@ function handleClick(event){
         showLives();
         var MainKey = GetGridID(event);
         console.log(GridKeyMap[parseInt(MainKey)])
-        paintGridAt(MainKey, '#FF0000');
-        
+        if(GridKeyMap[parseInt(MainKey)]=="Target"){
+        	paintGridAt(MainKey, 'black');
+        	GameStatusDiv.innerHTML="You Win";
+        	setTimeout(function(){
+
+        		var rectangle = new google.maps.Rectangle({strokeColor: 'green',
+					strokeOpacity:1.0, fillColor:'yellow', fillOpacity:1.0, map:map,
+					bounds: new google.maps.LatLngBounds(
+					new google.maps.LatLng(latmax,longmin),
+					new google.maps.LatLng(latmin,longmax)
+					)
+				});
+
+
+        	}, 1000);
+
+        }else{
+
+        	paintGridAt(MainKey, '#FF0000');
+        }
 	}else{
-		var GameStatusDiv = document.getElementById("gamestatus");
+		
 		GameStatusDiv.innerHTML="Game Over - Reload";
 
 
@@ -142,6 +160,11 @@ function getPlaces(){
 
 
 function initializeMap(position) {
+	
+
+
+	//var randomnumber = Math.floor(Math.random() * (99 - 0 + 1)) + 0;
+	GridKeyMap[11]="Target";
 
 	showLives();
     var lat = position.coords.latitude;
