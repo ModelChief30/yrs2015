@@ -5,6 +5,8 @@ var longmin=0;
 var longmax = 0;
 var latmax = 0;
 
+var map;
+
 var lives =5;
 var GridKeyMap = new Object();
 for(i=0;i<100;i++){
@@ -42,6 +44,94 @@ function showLives(){
 	livediv.innerHTML = "lives:" + lives;
 }
 
+function GetGridID(event){
+        	ClickPos = event.latLng;
+	        var ClickLat = ClickPos.lat();
+	        var ClickLong = ClickPos.lng();
+	        var ClickLatRem = (latmax-ClickLat) - (latmax-ClickLat)%divisionlat;
+	        var ClickLongRem = (ClickLong-longmin) - (ClickLong-longmin)%divisionlon;
+	        var ClickLatKey = (ClickLatRem)/divisionlat;
+	        var ClickLongKey = (ClickLongRem)/divisionlon;
+	        console.log(ClickLongKey + ", "+ClickLatKey);
+	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
+	        return MainKey;
+        }
+function paintGridAt(GridID, colour){
+	
+		
+    	GridIDLat = GridID%10;
+    	GridIDLong = (GridID - GridIDLat)/10;
+    	console.log(GridIDLat, GridIDLong)
+    	ColorSquareULCoLat=latmin + GridIDLat*divisionlat;
+
+    	ColorSquareULCoLon=longmax - GridIDLong*divisionlon;
+    	console.log(ColorSquareULCoLat, ColorSquareULCoLon);
+    	ColorSquareBRCoLat = latmin +(GridIDLat+1)*divisionlat;
+    	ColorSquareBRCoLon = longmax -(GridIDLong+1)*divisionlon;
+    	console.log(ColorSquareBRCoLat, ColorSquareBRCoLon);
+
+    	
+		var rectangle = new google.maps.Rectangle({strokeColor: colour,
+			strokeOpacity:1.0, fillColor:colour, map:map,
+			bounds: new google.maps.LatLngBounds(
+				new google.maps.LatLng(ColorSquareULCoLat,ColorSquareULCoLon),
+				new google.maps.LatLng(ColorSquareBRCoLat,ColorSquareBRCoLon)
+			)
+		});
+	
+}
+
+function handleClick(event){
+    
+    //var x =GridKeyMap[parseInt(MainKey)]="dead";
+    //GridKeyMap[parseInt(MainKey)]="dead";
+    //console.log(x);
+    if(lives>0){
+        
+        lives = lives-1;
+        showLives();
+        var MainKey = GetGridID(event);
+        console.log(GridKeyMap[parseInt(MainKey)])
+        paintGridAt(MainKey, '#FF0000');
+	}else{
+		var GameStatusDiv = document.getElementById("gamestatus");
+		GameStatusDiv.innerHTML="Game Over - Reload";
+
+
+	}
+};
+
+function getPlaces(){
+    	var request = {location: map.center, radius:'6000', query: 'church'};
+
+    	service = new google.maps.places.PlacesService(map);
+    	service.textSearch(request, handlePlaces);
+
+    	function handlePlaces(results, status){
+
+    		console.log("DEBUG:" + latmax)
+
+    		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			    for (var i = 0; i < results.length; i++) {
+			        var place = results[i];
+			        console.log(place);
+			        placeLat = place.geometry.location.lat();
+			        placeLon = place.geometry.location.lng();
+			        var placeLatRem = (latmax-placeLat) - (latmax-placeLat)%divisionlat;
+			        var placeLongRem = (placeLon-longmin) - (placeLon-longmin)%divisionlon;
+			        var placeLatKey = (placeLatRem)/divisionlat;
+			        var placeLongKey = (placeLongRem)/divisionlon;
+			        var placeKey = parseInt(placeLatKey + '' + Math.ceil(placeLongKey));
+			        GridKeyMap[placeKey] = "Church";
+			        console.log(GridKeyMap[placeKey]);
+			    }
+  			}
+
+    	}
+
+    	
+    }
+
 
 function initializeMap(position) {
 
@@ -59,7 +149,7 @@ function initializeMap(position) {
         disableDoubleClickZoom: true
     };
     
-    var map = new google.maps.Map(document.getElementById("mapcan"), myOptions);
+    map = new google.maps.Map(document.getElementById("mapcan"), myOptions);
     //alert("made map");
     google.maps.event.addListener(map, 'bounds_changed', function(){
         var bounds = map.getBounds();
@@ -96,107 +186,17 @@ function initializeMap(position) {
 
           
         }
-        function GetGridID(event){
-        	ClickPos = event.latLng;
-	        var ClickLat = ClickPos.lat();
-	        var ClickLong = ClickPos.lng();
-	        var ClickLatRem = (latmax-ClickLat) - (latmax-ClickLat)%divisionlat;
-	        var ClickLongRem = (ClickLong-longmin) - (ClickLong-longmin)%divisionlon;
-	        var ClickLatKey = (ClickLatRem)/divisionlat;
-	        var ClickLongKey = (ClickLongRem)/divisionlon;
-	        console.log(ClickLongKey + ", "+ClickLatKey);
-	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
-	        return MainKey;
-        }
-        function paintGridAt(GridID, colour){
-        	
-        		
-	        	GridIDLat = GridID%10;
-	        	GridIDLong = (GridID - GridIDLat)/10;
-	        	console.log(GridIDLat, GridIDLong)
-	        	ColorSquareULCoLat=latmin + GridIDLat*divisionlat;
-
-	        	ColorSquareULCoLon=longmax - GridIDLong*divisionlon;
-	        	console.log(ColorSquareULCoLat, ColorSquareULCoLon);
-	        	ColorSquareBRCoLat = latmin +(GridIDLat+1)*divisionlat;
-	        	ColorSquareBRCoLon = longmax -(GridIDLong+1)*divisionlon;
-	        	console.log(ColorSquareBRCoLat, ColorSquareBRCoLon);
-
-	        	
-	    		var rectangle = new google.maps.Rectangle({strokeColor: colour,
-	    			strokeOpacity:1.0, fillColor:colour, map:map,
-	    			bounds: new google.maps.LatLngBounds(
-	    				new google.maps.LatLng(ColorSquareULCoLat,ColorSquareULCoLon),
-	    				new google.maps.LatLng(ColorSquareBRCoLat,ColorSquareBRCoLon)
-	    			)
-	    		});
-        	
-        }
-
-        function handleClick(event){
-	        
-	        //var x =GridKeyMap[parseInt(MainKey)]="dead";
-	        //GridKeyMap[parseInt(MainKey)]="dead";
-	        //console.log(x);
-	        if(lives>0){
-		        
-		        lives = lives-1;
-		        showLives();
-		        var MainKey = GetGridID(event);
-		        console.log(GridKeyMap[parseInt(MainKey)])
-		        paintGridAt(MainKey, '#FF0000');
-	    	}else{
-	    		var GameStatusDiv = document.getElementById("gamestatus");
-	    		GameStatusDiv.innerHTML="Game Over - Reload";
-
-
-	    	}
-    	};
+        
 
 	    google.maps.event.addListener(map, 'click', handleClick);
 
 
     });
 
-	function getPlaces(){
-    	var request = {location: map.center, radius:'6000', query: 'church'};
-
-    	service = new google.maps.places.PlacesService(map);
-    	service.textSearch(request, handlePlaces);
-
-    	function handlePlaces(results, status){
-
-    		console.log("DEBUG:" + latmax)
-
-    		if (status == google.maps.places.PlacesServiceStatus.OK) {
-			    for (var i = 0; i < results.length; i++) {
-			        var place = results[i];
-			        console.log(place);
-			        placeLat = place.geometry.location.lat();
-			        placeLon = place.geometry.location.lng();
-			        var placeLatRem = (latmax-placeLat) - (latmax-placeLat)%divisionlat;
-			        var placeLongRem = (placeLon-longmin) - (placeLon-longmin)%divisionlon;
-			        var placeLatKey = (placeLatRem)/divisionlat;
-			        var placeLongKey = (placeLongRem)/divisionlon;
-			        var placeKey = parseInt(placeLatKey + '' + Math.ceil(placeLongKey));
-			        GridKeyMap[placeKey] = "Church";
-			        console.log(GridKeyMap[placeKey]);
-			    }
-  			}
-
-    	}
-
-    	
-    }
+	
 
 	google.maps.event.addListener(map, 'bounds_changed', getPlaces);
-
-    
-
-
-    
-
-    
+   
 }
 
 
