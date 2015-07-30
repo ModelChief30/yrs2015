@@ -4,8 +4,11 @@ var latmin=0;
 var longmin=0;
 var longmax = 0;
 var latmax = 0;
-
+var randomnumber = 11;
+//Math.floor(Math.random() * (99 - 0 + 1)) + 0;
 var map;
+
+var ColourArray = ['', 'red', 'red', 'orange', 'orange', 'orange', 'yellow'];
 
 var lives =5;
 var GridKeyMap = new Object();
@@ -42,6 +45,14 @@ function getLoc() {
 function showLives(){
 	var livediv =document.getElementById("lives");
 	livediv.innerHTML = "lives:" + lives;
+}
+
+function getDistance(event){
+	var MainKey = GetGridID(event);
+	var horDist = Math.abs((MainKey-MainKey%10)-(randomnumber-randomnumber%10));
+	var verDist = Math.abs((MainKey%10)-(randomnumber%10));
+	var DistanceKey = Math.floor(Math.sqrt(horDist^2 + verDist^2));
+	return DistanceKey;
 }
 
 function GetGridID(event){
@@ -115,10 +126,18 @@ function handleClick(event){
 
         	}, 1000);
 
-        }else{
+        }else if(GridKeyMap[parseInt(MainKey)]=="Hospital"){
+        	paintGridAt(MainKey, 'green');
+        	lives = lives+1;
 
-        	paintGridAt(MainKey, '#FF0000');
+        }else{
+        	if(getDistance(event)<7){
+        		paintGridAt(MainKey, ColourArray[getDistance(event)]);
+        	}else{
+        		paintGridAt(MainKey, 'yellow');
+        	}
         }
+        
 	}else{
 		
 		GameStatusDiv.innerHTML="Game Over - Reload";
@@ -128,7 +147,7 @@ function handleClick(event){
 };
 
 function getPlaces(){
-	var request = {location: map.center, radius:'6000', query: 'church'};
+	var request = {location: map.center, radius:'6000', query: 'hospital'};
 
 	service = new google.maps.places.PlacesService(map);
 	service.textSearch(request, handlePlaces);
@@ -148,7 +167,8 @@ function getPlaces(){
 		        var placeLatKey = (placeLatRem)/divisionlat;
 		        var placeLongKey = (placeLongRem)/divisionlon;
 		        var placeKey = parseInt(placeLatKey + '' + Math.ceil(placeLongKey));
-		        GridKeyMap[placeKey] = "Church";
+		        GridKeyMap[placeKey] = "Hospital";
+		        GridKeyMap[randomnumber]="Target";
 		        console.log(GridKeyMap[placeKey]);
 		    }
 			}
@@ -162,9 +182,7 @@ function getPlaces(){
 function initializeMap(position) {
 	
 
-
-	//var randomnumber = Math.floor(Math.random() * (99 - 0 + 1)) + 0;
-	GridKeyMap[11]="Target";
+	GridKeyMap[randomnumber]="Target";
 
 	showLives();
     var lat = position.coords.latitude;
