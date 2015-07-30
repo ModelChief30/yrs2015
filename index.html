@@ -8,11 +8,24 @@
       body { height: 100%; margin: 0; padding: 0 }
       
       #mapcan{ margin-left: auto; margin-right: auto }
-      #lives{position:fixed;}
-      #gamestatus{position:fixed; }
+      
+      #gamestatus, #lives{position:fixed; background-image: 
+                  /* outer shadows  (note the rgba is red, green, blue, alpha) */
+        -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.4); 
+        -moz-box-shadow: 0px 1px 6px rgba(23, 69, 88, .5);
+
+        /* rounded corners */
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 7px; 
+        border-radius: 7px;
+
+        /* gradients */
+        background: -webkit-gradient(linear, left top, left bottom, 
+        color-stop(0%, white), color-stop(15%, white), color-stop(100%, #D7E9F5)); 
+        background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); }
     </style>
  </head>
-  <body>
+  <body background="bg.png">
     
     <p>
     Instructions:<ul><li>Black: You have hit the Target</li>
@@ -20,14 +33,15 @@
            <li>Green: Hospital!!! +1 Lives!</li></ul></p>
     <button onclick="getLoc()">Get Location</button> 
     <h1>Map Wars</h1>
-    <div id="lives">Lives</div>
+    
     
     <p id="errorRender"></p>
     
     <div id="mapcan" style="width:350px; height:350px"></div>
     
     
-    <div id= "gamestatus" style="width: 700px; height:50px; margin-left: auto; margin-right:auto; text-align:center">Game Status</div>
+    <div id= "gamestatus" style="width: 350px; height:50px; margin-left: auto; margin-right:auto; text-align:center">Game Status</div>
+    <div id= "lives" style="width: 350px; height:50px; margin-left: auto; margin-right:auto; text-align:center; float:right; position:relative">Lives</div>
     
   </body>
 </html>
