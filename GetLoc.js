@@ -108,6 +108,30 @@ function initializeMap(position) {
 	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
 	        return MainKey;
         }
+        function paintGridAt(GridID, colour){
+        	
+        		
+	        	GridIDLat = GridID%10;
+	        	GridIDLong = (GridID - GridIDLat)/10;
+	        	console.log(GridIDLat, GridIDLong)
+	        	ColorSquareULCoLat=latmin + GridIDLat*divisionlat;
+
+	        	ColorSquareULCoLon=longmax - GridIDLong*divisionlon;
+	        	console.log(ColorSquareULCoLat, ColorSquareULCoLon);
+	        	ColorSquareBRCoLat = latmin +(GridIDLat+1)*divisionlat;
+	        	ColorSquareBRCoLon = longmax -(GridIDLong+1)*divisionlon;
+	        	console.log(ColorSquareBRCoLat, ColorSquareBRCoLon);
+
+	        	
+	    		var rectangle = new google.maps.Rectangle({strokeColor: colour,
+	    			strokeOpacity:1.0, fillColor:colour, map:map,
+	    			bounds: new google.maps.LatLngBounds(
+	    				new google.maps.LatLng(ColorSquareULCoLat,ColorSquareULCoLon),
+	    				new google.maps.LatLng(ColorSquareBRCoLat,ColorSquareBRCoLon)
+	    			)
+	    		});
+        	
+        }
 
         function handleClick(event){
 	        
@@ -120,10 +144,10 @@ function initializeMap(position) {
 		        showLives();
 		        var MainKey = GetGridID(event);
 		        console.log(GridKeyMap[parseInt(MainKey)])
-		        //paintGridAt(MainKey);
+		        paintGridAt(MainKey, '#FF0000');
 	    	}else{
 	    		var GameStatusDiv = document.getElementById("gamestatus");
-	    		GameStatusDiv.innerHTML("Game Over - Reload");
+	    		GameStatusDiv.innerHTML="Game Over - Reload";
 
 
 	    	}
