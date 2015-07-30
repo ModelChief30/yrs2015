@@ -108,6 +108,7 @@ function initializeMap(position) {
 	        var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
 	        return MainKey;
         }
+
         function handleClick(event){
 	        
 	        //var x =GridKeyMap[parseInt(MainKey)]="dead";
@@ -121,6 +122,9 @@ function initializeMap(position) {
 		        console.log(GridKeyMap[parseInt(MainKey)])
 		        //paintGridAt(MainKey);
 	    	}else{
+	    		var GameStatusDiv = document.getElementById("gamestatus");
+	    		GameStatusDiv.innerHTML("Game Over - Reload");
+
 
 	    	}
     	};
