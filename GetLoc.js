@@ -152,6 +152,7 @@ function handleClick(event){
         	HospSnd.play();
         	paintGridAt(MainKey, 'green');
         	lives = lives+2;
+        	showLives();
 
         }else{
         	ClickSnd.play();
