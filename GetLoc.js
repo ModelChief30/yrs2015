@@ -151,7 +151,7 @@ function handleClick(event){
         }else if(GridKeyMap[parseInt(MainKey)]=="Hospital"){
         	HospSnd.play();
         	paintGridAt(MainKey, 'green');
-        	lives = lives+1;
+        	lives = lives+2;
 
         }else{
         	ClickSnd.play();
