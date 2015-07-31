@@ -24,6 +24,11 @@ console.log(GridKeyMap[99]);
 
 function getLoc() {
     var wr = document.getElementById("errorRender")
+    lives = 5
+    showLives();
+    var GameStatusDiv = document.getElementById("gamestatus");
+    GameStatusDiv.innerHTML = "Game Status";
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(initializeMap);
     } else { 
