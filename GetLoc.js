@@ -98,9 +98,26 @@ function paintGridAt(GridID, colour){
 	//var ul = 51.568239056209464, -0.141448974609375
 	drawRect(ColorSquareULCoLat,ColorSquareULCoLon, ColorSquareBRCoLat, ColorSquareBRCoLon, colour);
 	//drawRect(51.549028703703016, -0.1146697998046875, 51.568239056209464, -0.141448974609375);
+	if(GridKeyMap[GridID]==null){
+		drawMarker(ColorSquareULCoLat,ColorSquareULCoLon, "zombie.png")
+	}else if(GridKeyMap[GridID]=="Hospital"){
+		drawMarker(ColorSquareULCoLat,ColorSquareULCoLon, "hospital.png")
+	}else if(GridKeyMap[GridID]=="Target"){
+		drawMarker(ColorSquareULCoLat,ColorSquareULCoLon, "safety.png")
+	}
 	
 	
 	
+}
+
+function drawMarker(KeyLat, KeyLng, MarkIcon){
+	var MarkCenter = new google.maps.LatLng(KeyLat - divisionlat, KeyLng + divisionlon/2);
+	var MarkImage = MarkIcon;
+	var myMarker = new google.maps.Marker({
+		position:MarkCenter,
+		map: map,
+		icon: MarkImage
+	});
 }
 
 function handleClick(event){
