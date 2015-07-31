@@ -12,7 +12,7 @@ var ClickSnd = new Audio("click.wav");
 var WinSnd = new Audio("win.wav");
 var HospSnd = new Audio("hospital.wav");
 
-var ColourArray = ['', 'red', 'red', 'orange', 'orange', 'orange', 'yellow'];
+var ColourArray = ['', 'red', 'red', 'red', 'orange', 'orange', 'yellow'];
 
 var lives =5;
 var GridKeyMap = new Object();
@@ -31,6 +31,7 @@ function getLoc() {
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(initializeMap);
+        
     } else { 
         wr.innerHTML = "Try a new browser.";
     }
