@@ -12,7 +12,7 @@ var ClickSnd = new Audio("click.wav");
 var WinSnd = new Audio("win.wav");
 var HospSnd = new Audio("hospital.wav");
 
-var ColourArray = ['', 'red', 'orange', 'orange', 'yellow', 'yellow', 'yellow'];
+var ColourArray = ['', 'red', 'orange', 'orange'];
 
 var scoreCount = 0;
 
@@ -176,7 +176,7 @@ function handleClick(event){
 
         }else{
         	ClickSnd.play();
-        	if(getDistance(event)<7){
+        	if(getDistance(event)<4){
         		paintGridAt(MainKey, ColourArray[getDistance(event)]);
         	}else{
         		paintGridAt(MainKey, 'yellow');
