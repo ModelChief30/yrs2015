@@ -60,10 +60,10 @@ function showLives(){
 }
 
 function getDistance(event){
-	var MainKey = GetGridID(event);
-	var horDist = Math.abs((MainKey-MainKey%10)-(randomnumber-randomnumber%10));
+	var MainKey = parseInt(GetGridID(event));
+	var horDist = Math.abs(((MainKey-MainKey%10)-(randomnumber-randomnumber%10))/10);
 	var verDist = Math.abs((MainKey%10)-(randomnumber%10));
-	var DistanceKey = Math.floor(Math.sqrt(horDist^2 + verDist^2));
+	var DistanceKey = Math.floor(Math.sqrt(Math.pow(horDist,2) + Math.pow(verDist,2)));
 	return DistanceKey;
 }
 
