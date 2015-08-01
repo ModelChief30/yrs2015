@@ -14,6 +14,8 @@ var HospSnd = new Audio("hospital.wav");
 
 var ColourArray = ['', 'red', 'red', 'red', 'orange', 'orange', 'yellow'];
 
+var scoreCount = 0;
+
 var lives =5;
 var GridKeyMap = new Object();
 for(i=0;i<100;i++){
@@ -28,7 +30,7 @@ function getLoc() {
     showLives();
     var GameStatusDiv = document.getElementById("gamestatus");
     GameStatusDiv.innerHTML = "Game Status";
-
+    scoreCount+=1;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(initializeMap);
         
@@ -73,6 +75,10 @@ function GetGridID(event){
     var ClickLongRem = (ClickLong-longmin) - (ClickLong-longmin)%divisionlon;
     var ClickLatKey = (ClickLatRem)/divisionlat;
     var ClickLongKey = (ClickLongRem)/divisionlon;
+
+
+
+
     console.log(ClickLongKey + ", "+ClickLatKey);
     var MainKey = ClickLongKey + '' + (Math.ceil(ClickLatKey));
     return MainKey;
@@ -133,7 +139,11 @@ function handleClick(event){
     //console.log(x);
     if(lives>0){
         console.log("awf" +event.latLng);
-        lives = lives-1;
+        if(scoreCount<2){
+            lives = lives-1;
+        }else{
+            lives = lives -0.5;
+        }
         showLives();
         var MainKey = GetGridID(event);
         console.log(GridKeyMap[parseInt(MainKey)])
@@ -157,7 +167,11 @@ function handleClick(event){
         }else if(GridKeyMap[parseInt(MainKey)]=="Hospital"){
         	HospSnd.play();
         	paintGridAt(MainKey, 'green');
-        	lives = lives+2;
+            if(scoreCount<2){
+        	    lives = lives+2;
+            }else{
+                lives = lives+1;
+            }
         	showLives();
 
         }else{
@@ -221,7 +235,7 @@ function initializeMap(position) {
     
     var myOptions = {
         center: new google.maps.LatLng(lat, longit),
-        zoom: 11,
+        zoom: 11, 
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         draggable: false,
@@ -267,9 +281,7 @@ function initializeMap(position) {
           
         }
         
-
 	    google.maps.event.addListener(map, 'click', handleClick);
-
 
     });
 
