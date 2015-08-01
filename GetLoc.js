@@ -12,7 +12,7 @@ var ClickSnd = new Audio("click.wav");
 var WinSnd = new Audio("win.wav");
 var HospSnd = new Audio("hospital.wav");
 
-var ColourArray = ['', 'red', 'red', 'red', 'orange', 'orange', 'yellow'];
+var ColourArray = ['', 'red', 'orange', 'orange', 'yellow', 'yellow', 'yellow'];
 
 var scoreCount = 0;
 
